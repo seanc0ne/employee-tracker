@@ -51,6 +51,34 @@ function loadMainPrompts() {
                 {
                     name: "View All Roles"
                     value: "VIEW_ROLES"
+                },
+                {
+                    name: "Add Role",
+                    value: "ADD_ROLE"
+                },
+                {
+                    name: "View All Departments"
+                    value: "VIEW_DEPARTMENTS"
+                },
+                {
+                    name: "Add Department",
+                    value: "ADD_DEPARTMENT"
+                },
+                {
+                    name: "Remove Department",
+                    value: "REMOVE_DEPARTMENT"
+                },
+                {
+                    name: "Remove Role",
+                    value: "REMOVE_ROLE"
+                },
+                {
+                    name: "View Budget",
+                    value: "VIEW_BUDGET"
+                },
+                {
+                    Name: "Quit",
+                    value: "QUIT"
                 }
             ]
         }
