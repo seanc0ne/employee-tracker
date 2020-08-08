@@ -49,7 +49,7 @@ function loadMainPrompts() {
                     value: "UPDATE_EMPLOYEE_MANAGER"
                 },
                 {
-                    name: "View All Roles"
+                    name: "View All Roles",
                     value: "VIEW_ROLES"
                 },
                 {
@@ -57,7 +57,7 @@ function loadMainPrompts() {
                     value: "ADD_ROLE"
                 },
                 {
-                    name: "View All Departments"
+                    name: "View All Departments",
                     value: "VIEW_DEPARTMENTS"
                 },
                 {
@@ -141,4 +141,51 @@ function viewEmployees() {
             console.table(employees);
         })
         .then(() => loadMainPrompts());
+}
+
+function viewEmployeesByDepartment() {
+    db.findAllDepartments(
+        .then(([rows]) => {
+            let departments = rows;
+            const departmentChoices = departments.map(({ id, name }) => ({
+                name: name,
+                value: id
+            }));
+
+            prompt([
+                {
+                    type: "list",
+                    name: "departmentId",
+                    message: "What department would you like to see the employees for?",
+                    choices: departmentChoices
+                }
+            ])
+                .then(res => db.findAllEmployeesByDepartment(res.departmentId))
+                .then(([rows]) => {
+                    let employees = rows;
+                    console.log("\n");
+                    console.table(employees);
+                })
+                .then(() => loadMainPrompts())
+        })
+    );
+}
+
+function viewEmployeesByManager() {
+    db.findAllEmployees()
+    .then(([rows]) => {
+        let managers = rows;
+        const managerChoices = managers.map(({ id, first_name, last_name, }) => ({
+            name: `${first_name} ${last_name}`,
+            value: id
+        }));
+
+        prompt([
+            {
+                type: "list",
+                name: "managerId",
+                message: "Which employee would you like to see direct recports for?",
+            }
+        ])
+    })
 }
