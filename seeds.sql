@@ -1,9 +1,15 @@
-drop table if exists artist;
+use employees;
 
+INSERT INTO department
+    (name)
+VALUES
+    ('Sales'),
+    ('Engineering'),
+    ('Finance'),
+    ('Legal');
 
-
-
-create table artist ( 
-    id int unsigned not null auto_increment primary key, 
-    name varchar (128) not null 
-    );
+INSERT INTO role
+    (titles, salary, department_id)
+VALUES
+    ('Sales Lead', 100000, 1),
+    
