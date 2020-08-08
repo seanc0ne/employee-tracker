@@ -82,5 +82,48 @@ function loadMainPrompts() {
                 }
             ]
         }
+    }).then(res => {
+        let choice = res.choice;
+        switch (choice) {
+            case "VIEW_EMPLOYEES":
+                viewEmployees();
+                break;
+            case "VIEW_EMPLOYEES_BY_DEPARTMENT":
+                viewEmployeesByDepartment();
+                break;
+            case "VIEW_EMPLOYEES_BY_MANAGER":
+                viewEmployeesByManager();
+                break;
+            case "ADD_EMPLOYEE":
+                addEmployee();
+                break;
+            case "REMOVE_EMPLOYEE":
+                removeEmployee();
+                break;
+            case "UPDATE_EMPLOYEE_ROLE":
+                updateEmployeeRole();
+                break;
+            case "UPDATE_EMPLOYEE_MANAGER":
+                updateEmployeeManager();
+                break;
+            case "VIEW_DEPARTMENTS":
+                viewDepartments();
+                break;
+            case "ADD_DEPARTMENT":
+                addDepartment();
+                break;
+            case "REMOVE_DEPARTMENT":
+                removeDepartment();
+                break;
+            case "VIEW_BUDGET":
+                viewBudget();
+                break;
+            case "VIEW_ROLES":
+                viewRoles();
+                break;
+            case "ADD_ROLE":
+                addRole();
+                break;
+        }
     })
 }
