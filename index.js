@@ -185,7 +185,16 @@ function viewEmployeesByManager() {
                 type: "list",
                 name: "managerId",
                 message: "Which employee would you like to see direct recports for?",
+                choices: managerChoices
             }
         ])
+            .then(res => db.findAllEmployeesByManager(res.managerId))
+            .then(([rows]) => {
+                let employees = rows;
+                console.log("\n");
+                if (employees.length === 0) {
+                    console.log("This employee has no direct reports");
+                } else {}
+            })
     })
 }
