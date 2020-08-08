@@ -194,7 +194,103 @@ function viewEmployeesByManager() {
                 console.log("\n");
                 if (employees.length === 0) {
                     console.log("This employee has no direct reports");
-                } else {}
+                } else {
+                    console.table(employees);
+                }
+            })
+            .then(() => loadMainPrompts())
+    });
+}
+
+function removeEmployee() {
+    db.findAllEmployees()
+        .then(([rows}) => {
+            let employees = rows;
+            const employeeChoices = employees.map(({ id, first_name, last_name }) => ({
+                name: `${first_name} ${last_name}`,
+                value: id
+            }));
+
+            prompt([
+                {
+                    type: "list",
+                    name: "employeeId",
+                    message: "Which employee would you like to remove?",
+                    choices: employeeChoices
+                }
+            ])
+                .then(res => db.removeEmployee(res.employeeId))
+                .then(() => console.log("Removed employee from the database"))
+                .then(() => loadMainPrompts())
+        }]))
+}
+
+function updateEmployeeRole() {
+    db.findAllEmployees()
+        .then(([rows}) => {
+            let employees = rows;
+            const employeeChoices = employees.map(({ id, first_name, last_name }) => ({
+                name: `${first_name} ${last_name}`,
+                value: id
+            }));
+
+            prompt([
+                {
+                    type: "list",
+                    name: "employeeId",
+                    message: "Which employee's role would you like to update?",
+                    choices: employeeChoices
+                }
+            ])
+                .then(res => {
+                    let employeeId = res.employeeId;
+                    db.findAllRoles()
+                        .then(([rows]) => {
+                            let roles = rows;
+                            const roleChoices = roles.map(({ id, title }) => ({
+                                name: title
+                                value: id
+                            }));
+
+                            prompt([
+                                {
+                                    type: "list",
+                                    name: "roleId",
+                                    message: "What role would you like to give the selected employee?",
+                                    choices: roleChoices
+                                }
+                            ])
+                                .then(res => db.updateEmployeeRole(employeeId, res.roleId))
+                                .then(() => console.log("Employee's role updated"))
+                                .then(() => loadMainPrompts())
+                        });
+                });
+        })
+
+function updateEmployeeManager() {
+    db.findAllEmployees()
+    .then(([rows]) => {
+        let employees = rows;
+        const employeeChoices = employees.map(({ id, first_name, last_name }) => ({
+            name: `${first_name} ${last_name}`,
+            value: id
+        }));
+
+        prompt([
+            {
+                type: "list",
+                name: "employeeId",
+                message: "Which employee's manager would you like to update?",
+                choices: employeeChoices
+            }
+        ])
+            .then(res => {
+                let employeeId = res.employeeId
+                db.findAllPossibleManagers(employeeId)
+                    .then(([rows]) => {
+                        let managers = rows;
+                        
+                    })
             })
     })
 }
