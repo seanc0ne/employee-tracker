@@ -6,7 +6,7 @@ require("console.table");
 init();
 
 function init () {
-    const logoText = logo({ name: Employee Tracker" }).render();
+    const logoText = logo({ name: "Employee Tracker" }).render();
 
     console.log(logoText);
 
@@ -289,7 +289,7 @@ function updateEmployeeManager() {
                 db.findAllPossibleManagers(employeeId)
                     .then(([rows]) => {
                         let managers = rows;
-                        
+
                     })
             })
     })
