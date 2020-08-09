@@ -5,6 +5,11 @@ const findAllEmployees = () => {
     return connection.promise().query('SELECT * FROM employee');
 }
 
+const viewAllDep = () => {
+    console.log('Viewing all departments...\n');
+    
+}
+
 module.exports = {
     findAllEmployees
 };
