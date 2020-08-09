@@ -125,6 +125,8 @@ function loadMainPrompts() {
     })
 }
 
+// VIEW ALL DEPTS/ROLES/EES FUNCTIONS
+
 function viewEmployees() {
     db.findAllEmployees()
         .then(([rows]) => {
@@ -134,6 +136,28 @@ function viewEmployees() {
         })
         .then(() => loadMainPrompts());
 }
+
+function viewDepartments() {
+    db.findAllDepartments()
+        .then(([rows]) => {
+            let departments = rows;
+            console.log("\n");
+            console.table(departments);
+        })
+        .then(() => loadMainPrompts());
+}
+
+function viewRoles() {
+    db.findAllRoles()
+        .then(([rows]) => {
+            let roles = rows;
+            console.log("\n");
+            console.table(roles);
+        })
+        .then(() => loadMainPrompts());
+}
+
+// VIEW BY FUNCTIONS
 
 function viewEmployeesByDepartment() {
     db.findAllDepartments()
@@ -192,6 +216,8 @@ function viewEmployeesByManager() {
                 .then(() => loadMainPrompts())
         });
 }
+
+// UPDATE FUNCTIONS
 
 function updateEmployeeRole() {
     db.findAllEmployees()
@@ -279,7 +305,7 @@ function updateEmployeeManager() {
         });
 }
 
-// ADD DEPT/ROLE/EE FUNCTIONS HERE
+// ADD DEPT/ROLE/EE FUNCTIONS 
 
 function addEmployee() {
     inquirer.prompt([{
@@ -425,7 +451,7 @@ function addRole() {
     });
 }
 
-// DELETE DEPT/ROLE/EE FUNCTIONS HERE
+// DELETE DEPT/ROLE/EE FUNCTIONS 
 
 function removeEmployee() {
     db.findAllEmployees()
