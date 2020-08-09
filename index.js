@@ -1,6 +1,7 @@
 const { prompt } = require("inquirer");
 const logo = require("asciiart-logo");
 const db = require("./db");
+const connection = require("./db/connection");
 require("console.table");
 
 init();
@@ -333,8 +334,33 @@ function addEmployee() {
             }
         }
     },
-    
-])
+    {
+        name: "newEmployeeRole",
+        type: "input",
+        message: "Enter Employee Role:",
+        validate: (input) => {
+            return true;
+        } else {
+            console.log("That role, honey. Give it up:");
+        }
+    }
+]).then(function(userInput) {
+    connection.query(
+        "INSERT INTO employee SET ?", {
+            first_name: userInput.newEmployeeFirst,
+            last_name: userInput.newEmployeeLast,
+            role_id: userInput.newEmployeeRole,
+            manager_id: null
+        },
+        function (err, userInput) {
+            if (err) {
+                throw err;
+            }
+            console.table(userInput);
+        }
+    );
+    init();
+});
 }
 // function addEmployee() {
 //     db.findAllEmployees()
