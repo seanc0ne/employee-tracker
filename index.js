@@ -308,7 +308,7 @@ function updateEmployeeManager() {
 // ADD DEPT/ROLE/EE FUNCTIONS 
 
 function addEmployee() {
-    inquirer.prompt([{
+    prompt([{
         name: "newEmployeeFirst",
         type: "input",
         message: "Enter new employee's first name:",
@@ -363,7 +363,7 @@ function addEmployee() {
 }
 
 function addDepartment() {
-    inquirer.prompt([{
+    prompt([{
         name: "newDepartment",
         type: "input",
         message: "Enter name of new department:",
@@ -394,7 +394,7 @@ function addDepartment() {
 }
 
 function addRole() {
-    inquirer.prompt([{
+    prompt([{
             name: "newRoleTitle",
             type: "input",
             message: "Enter name of new role:",

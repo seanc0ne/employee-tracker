@@ -15,8 +15,21 @@ const findAllRoles = () => {
     return connection.promise().query('SELECT * FROM role');
 }
 
+const findAllEmployeesByDepartment = (departmentId) => {
+    console.log('Finding employees by department...\n');
+    return connection.promise().query(`SELECT * FROM employee WHERE role_id IN 
+    (SELECT id FROM role WHERE department_id = ${departmentId})`);
+}
+
+const findAllEmployeesByManager = (managerId) => {
+    console.log('Finding employees by manager...\n');
+    return connection.promise().query(`SELECT * FROM employee WHERE manager_id = ${managerId}`);
+}
+
 module.exports = {
     findAllEmployees,
     findAllDepartments,
-    findAllRoles
+    findAllRoles,
+    findAllEmployeesByDepartment,
+    findAllEmployeesByManager
 };
