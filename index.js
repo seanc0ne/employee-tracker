@@ -312,7 +312,7 @@ function updateEmployeeManager() {
 function addEmployee() {
     .prompt([{
         name: "newEmployeeFirst",
-        type: "input"
+        type: "input",
         message: "Enter new employee's first name:",
         validate: (input) => {
             if (input) {
@@ -339,29 +339,32 @@ function addEmployee() {
         type: "input",
         message: "Enter Employee Role:",
         validate: (input) => {
-            return true;
+            if (input) {
+                return true;
         } else {
             console.log("That role, honey. Give it up:");
         }
-    }
-]).then(function(userInput) {
-    connection.query(
-        "INSERT INTO employee SET ?", {
-            first_name: userInput.newEmployeeFirst,
-            last_name: userInput.newEmployeeLast,
-            role_id: userInput.newEmployeeRole,
-            manager_id: null
-        },
-        function (err, userInput) {
-            if (err) {
-                throw err;
+    }}
+    ]).then(function(userInput) {
+        connection.query(
+            "INSERT INTO employee SET ?", {
+                first_name: userInput.newEmployeeFirst,
+                last_name: userInput.newEmployeeLast,
+                role_id: userInput.newEmployeeRole,
+                manager_id: null
+            },
+            function (err, userInput) {
+                if (err) {
+                    throw err;
+                }
+                console.table(userInput);
             }
-            console.table(userInput);
-        }
-    );
-    init();
-});
+        );
+        init();
+    });
 }
+
+
 // function addEmployee() {
 //     db.findAllEmployees()
 //         .then(([rows]) => {
