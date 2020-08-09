@@ -73,10 +73,6 @@ function loadMainPrompts() {
                 value: "REMOVE_ROLE"
             },
             {
-                name: "View Budget",
-                value: "VIEW_BUDGET"
-            },
-            {
                 Name: "Quit",
                 value: "QUIT"
             }
@@ -113,9 +109,6 @@ function loadMainPrompts() {
                 break;
             case "REMOVE_DEPARTMENT":
                 removeDepartment();
-                break;
-            case "VIEW_BUDGET":
-                viewBudget();
                 break;
             case "VIEW_ROLES":
                 viewRoles();
@@ -310,7 +303,7 @@ function updateEmployeeManager() {
 }
 
 function addEmployee() {
-    .prompt([{
+    inquirer.prompt([{
         name: "newEmployeeFirst",
         type: "input",
         message: "Enter new employee's first name:",
@@ -364,26 +357,91 @@ function addEmployee() {
     });
 }
 
+function addDepartment() {
+    inquirer.prompt([{
+        name: "newDepartment",
+        type: "input",
+        message: "Enter name of new department:",
+        validate: (input) => {
+            if (input) {
+                return true;
+            } else {
+                console.log("You better enter that department name:");
+            }
+        }
+    }]).then(function(userInput) {
+        connection.query(
+            "INSERT INTO department SET ?", {
+                name: userInput.newDepartment,
+            },
+            function(err, userInput) {
+                if (err) {
+                    throw err;
+                }
+                console.log(`Added new department: ${userInput.newDepartment}`);
+                viewAllDep();
+            }
+        );
 
-// function addEmployee() {
-//     db.findAllEmployees()
-//         .then(([rows]) => {
-//             let employees = rows;
-//             const employeeChoices = employees.map(({ id, first_name, last_name }) => ({
-//                 name: `${first_name} ${last_name}`,
-//                 value: id
-//             }));
+        init();
 
-//             prompt([
-//                 {
-//                     type: "list",
-//                     name: "employeeId",
-//                     message: "Which employee would you like to remove?",
-//                     choices: employeeChoices
-//                 }
-//             ])
-//                 .then(res => db.removeEmployee(res.employeeId))
-//                 .then(() => console.log("Removed employee from the database"))
-//                 .then(() => loadMainPrompts())
-//         });
-// }
+    });
+}
+
+function addRole() {
+    inquirer.prompt([{
+            name: "newRoleTitle",
+            type: "input",
+            message: "Enter name of new role:",
+            validate: (input) => {
+                if (input) {
+                    return true;
+                } else {
+                    console.log("Please enter new role name:");
+                }
+            }
+        },
+        {
+            name: "salary",
+            type: "input",
+            message: "Enter salary of new role (Use integers i.e. 100000)",
+            validate: (input) => {
+                if (input) {
+                    return true;
+                } else {
+                    console.log("The coins, girl:");
+                }
+            }
+        },
+        {
+            name: "roleDepID",
+            type: "input",
+            message: "Enter the new role's department ID:",
+            validate: (input) => {
+                if (input) {
+                    return true;
+                } else {
+                    console.log("Please enter the new role's department ID:");
+                }
+            }
+        }
+    ]).then(function(userInput) {
+        connection.query(
+            "INSERT INTO role SET ?", {
+                title: userInput.newRoleTitle,
+                salary: userInput.salary,
+                dep_id: userInput.roleDepID,
+            },
+            function(err, userInput) {
+                if (err) {
+                    throw err;
+                }
+                console.log(`Added new role: ${userInput.newRoleTitle}`);
+                viewAllRoles();
+            }
+        );
+
+        init();
+
+    });
+}
