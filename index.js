@@ -308,6 +308,34 @@ function updateEmployeeManager() {
         });
 }
 
+function addEmployee() {
+    .prompt([{
+        name: "newEmployeeFirst",
+        type: "input"
+        message: "Enter new employee's first name:",
+        validate: (input) => {
+            if (input) {
+                return true;
+            } else {
+                console.log("Honey, you gotta give me a name:");
+            }
+        }
+    },
+    {
+        name: "newEmployeeLast",
+        type: "input",
+        message: "Enter new employee last name:",
+        validate: (input) => {
+            if (input) {
+                return true;
+            } else {
+                console.log("We need a last name, girl:");
+            }
+        }
+    },
+    
+])
+}
 // function addEmployee() {
 //     db.findAllEmployees()
 //         .then(([rows]) => {
