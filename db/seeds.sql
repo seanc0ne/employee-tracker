@@ -5,8 +5,8 @@ INSERT INTO department
 VALUES
     ('Vocals'),
     ('Guitars'),
-    ('Drums'),
-    ('Management');
+    ('Percussion'),
+    ('Roadies');
 
 INSERT INTO role
     (title, salary, department_id)
@@ -17,8 +17,8 @@ VALUES
     ('Rhythm Guitar', 150000, 2),
     ('Drummer', 165000, 3),
     ('Cowbell', 120000, 3),
-    ('Manager', 275000, 4),
-    ('Record Company Bozo', 200000, 4);
+    ('Truck Driver', 275000, 4),
+    ('Roadie', 200000, 4);
 
 INSERT INTO employee
     (first_name, last_name, role_id, manager_id)
