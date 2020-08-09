@@ -279,7 +279,7 @@ function updateEmployeeManager() {
         });
 }
 
-// ADD FUNCTIONS HERE
+// ADD DEPT/ROLE/EE FUNCTIONS HERE
 
 function addEmployee() {
     inquirer.prompt([{
@@ -425,7 +425,7 @@ function addRole() {
     });
 }
 
-// DELETE FUNCTIONS HERE
+// DELETE DEPT/ROLE/EE FUNCTIONS HERE
 
 function removeEmployee() {
     db.findAllEmployees()
@@ -473,4 +473,25 @@ function removeDepartment() {
         });
 }
 
+function removeRole() {
+    db.findAllRoles()
+        .then(([rows]) => {
+            let roles = rows;
+            const roleChoices = roles.map(({ id, title }) => ({
+                name: title,
+                value: id
+            }));
 
+            prompt([
+                {
+                    type: "list",
+                    name: "roleId",
+                    message: "Which role would you like to remove?",
+                    choices: roleChoices
+                }
+            ])
+                .then(res => db.removeRole(res.roleId))
+                .then(() => console.log("Removed role from the database"))
+                .then(() => loadMainPrompts())
+        });
+}
