@@ -193,29 +193,6 @@ function viewEmployeesByManager() {
         });
 }
 
-function removeEmployee() {
-    db.findAllEmployees()
-        .then(([rows]) => {
-            let employees = rows;
-            const employeeChoices = employees.map(({ id, first_name, last_name }) => ({
-                name: `${first_name} ${last_name}`,
-                value: id
-            }));
-
-            prompt([
-                {
-                    type: "list",
-                    name: "employeeId",
-                    message: "Which employee would you like to remove?",
-                    choices: employeeChoices
-                }
-            ])
-                .then(res => db.removeEmployee(res.employeeId))
-                .then(() => console.log("Removed employee from the database"))
-                .then(() => loadMainPrompts())
-        });
-}
-
 function updateEmployeeRole() {
     db.findAllEmployees()
         .then(([rows]) => {
@@ -301,6 +278,8 @@ function updateEmployeeManager() {
                 });
         });
 }
+
+// ADD FUNCTIONS HERE
 
 function addEmployee() {
     inquirer.prompt([{
@@ -445,3 +424,53 @@ function addRole() {
 
     });
 }
+
+// DELETE FUNCTIONS HERE
+
+function removeEmployee() {
+    db.findAllEmployees()
+        .then(([rows]) => {
+            let employees = rows;
+            const employeeChoices = employees.map(({ id, first_name, last_name }) => ({
+                name: `${first_name} ${last_name}`,
+                value: id
+            }));
+
+            prompt([
+                {
+                    type: "list",
+                    name: "employeeId",
+                    message: "Which employee would you like to remove?",
+                    choices: employeeChoices
+                }
+            ])
+                .then(res => db.removeEmployee(res.employeeId))
+                .then(() => console.log("Removed employee from the database"))
+                .then(() => loadMainPrompts())
+        });
+}
+
+function removeDepartment() {
+    db.findAllDepartments()
+        .then(([rows]) => {
+            let departments = rows;
+            const departmentChoices = departments.map(({ id, name }) => ({
+                name: name,
+                value: id
+            }));
+
+            prompt([
+                {
+                    type: "list",
+                    name: "departmentId",
+                    message: "Which department would you like to remove?",
+                    choices: departmentChoices
+                }
+            ])
+                .then(res => db.removeDepartment(res.departmentId))
+                .then(() => console.log("Removed department from the database"))
+                .then(() => loadMainPrompts())
+        });
+}
+
+
