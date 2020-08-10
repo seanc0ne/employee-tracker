@@ -36,18 +36,18 @@ function loadMainPrompts() {
                 name: "Add Employee",
                 value: "ADD_EMPLOYEE"
             },
-            {
-                name: "Remove Employee",
-                value: "REMOVE_EMPLOYEE"
-            },
+            // {
+            //     name: "Remove Employee",
+            //     value: "REMOVE_EMPLOYEE"
+            // },
             {
                 name: "Update Employee Role",
                 value: "UPDATE_EMPLOYEE_ROLE"
             },
-            {
-                name: "Update Employee Manager",
-                value: "UPDATE_EMPLOYEE_MANAGER"
-            },
+            // {
+            //     name: "Update Employee Manager",
+            //     value: "UPDATE_EMPLOYEE_MANAGER"
+            // },
             {
                 name: "View All Roles",
                 value: "VIEW_ROLES"
@@ -64,14 +64,14 @@ function loadMainPrompts() {
                 name: "Add Department",
                 value: "ADD_DEPARTMENT"
             },
-            {
-                name: "Remove Department",
-                value: "REMOVE_DEPARTMENT"
-            },
-            {
-                name: "Remove Role",
-                value: "REMOVE_ROLE"
-            },
+            // {
+            //     name: "Remove Department",
+            //     value: "REMOVE_DEPARTMENT"
+            // },
+            // {
+            //     name: "Remove Role",
+            //     value: "REMOVE_ROLE"
+            // },
             {
                 Name: "Quit",
                 value: "QUIT"
@@ -92,33 +92,33 @@ function loadMainPrompts() {
             case "ADD_EMPLOYEE":
                 addEmployee();
                 break;
-            case "REMOVE_EMPLOYEE":
-                removeEmployee();
-                break;
+            // case "REMOVE_EMPLOYEE":
+            //     removeEmployee();
+            //     break;
             case "UPDATE_EMPLOYEE_ROLE":
                 updateEmployeeRole();
                 break;
-            case "UPDATE_EMPLOYEE_MANAGER":
-                updateEmployeeManager();
-                break;
+            // case "UPDATE_EMPLOYEE_MANAGER":
+            //     updateEmployeeManager();
+            //     break;
             case "VIEW_DEPARTMENTS":
                 viewDepartments();
                 break;
             case "ADD_DEPARTMENT":
                 addDepartment();
                 break;
-            case "REMOVE_DEPARTMENT":
-                removeDepartment();
-                break;
+            // case "REMOVE_DEPARTMENT":
+            //     removeDepartment();
+            //     break;
             case "VIEW_ROLES":
                 viewRoles();
                 break;
             case "ADD_ROLE":
                 addRole();
                 break;
-            case "REMOVE_ROLE":
-                removeRole();
-                break;
+            // case "REMOVE_ROLE":
+            //     removeRole();
+            //     break;
             default:
                 quit();
         }
@@ -484,71 +484,71 @@ function addRole() {
 
 // DELETE DEPT/ROLE/EE FUNCTIONS 
 
-function removeEmployee() {
-    db.findAllEmployees()
-        .then(([rows]) => {
-            let employees = rows;
-            const employeeChoices = employees.map(({ id, first_name, last_name }) => ({
-                name: `${first_name} ${last_name}`,
-                value: id
-            }));
+// function removeEmployee() {
+//     db.findAllEmployees()
+//         .then(([rows]) => {
+//             let employees = rows;
+//             const employeeChoices = employees.map(({ id, first_name, last_name }) => ({
+//                 name: `${first_name} ${last_name}`,
+//                 value: id
+//             }));
 
-            prompt([
-                {
-                    type: "list",
-                    name: "employeeId",
-                    message: "Which employee would you like to remove?",
-                    choices: employeeChoices
-                }
-            ])
-                .then(res => db.removeEmployee(res.employeeId))
-                .then(() => console.log("Removed employee from the database"))
-                .then(() => loadMainPrompts())
-        });
-}
+//             prompt([
+//                 {
+//                     type: "list",
+//                     name: "employeeId",
+//                     message: "Which employee would you like to remove?",
+//                     choices: employeeChoices
+//                 }
+//             ])
+//                 .then(res => db.removeEmployee(res.employeeId))
+//                 .then(() => console.log("Removed employee from the database"))
+//                 .then(() => loadMainPrompts())
+//         });
+// }
 
-function removeDepartment() {
-    db.findAllDepartments()
-        .then(([rows]) => {
-            let departments = rows;
-            const departmentChoices = departments.map(({ id, name }) => ({
-                name: name,
-                value: id
-            }));
+// function removeDepartment() {
+//     db.findAllDepartments()
+//         .then(([rows]) => {
+//             let departments = rows;
+//             const departmentChoices = departments.map(({ id, name }) => ({
+//                 name: name,
+//                 value: id
+//             }));
 
-            prompt([
-                {
-                    type: "list",
-                    name: "departmentId",
-                    message: "Which department would you like to remove?",
-                    choices: departmentChoices
-                }
-            ])
-                .then(res => db.removeDepartment(res.departmentId))
-                .then(() => console.log("Removed department from the database"))
-                .then(() => loadMainPrompts())
-        });
-}
+//             prompt([
+//                 {
+//                     type: "list",
+//                     name: "departmentId",
+//                     message: "Which department would you like to remove?",
+//                     choices: departmentChoices
+//                 }
+//             ])
+//                 .then(res => db.removeDepartment(res.departmentId))
+//                 .then(() => console.log("Removed department from the database"))
+//                 .then(() => loadMainPrompts())
+//         });
+// }
 
-function removeRole() {
-    db.findAllRoles()
-        .then(([rows]) => {
-            let roles = rows;
-            const roleChoices = roles.map(({ id, title }) => ({
-                name: title,
-                value: id
-            }));
+// function removeRole() {
+//     db.findAllRoles()
+//         .then(([rows]) => {
+//             let roles = rows;
+//             const roleChoices = roles.map(({ id, title }) => ({
+//                 name: title,
+//                 value: id
+//             }));
 
-            prompt([
-                {
-                    type: "list",
-                    name: "roleId",
-                    message: "Which role would you like to remove?",
-                    choices: roleChoices
-                }
-            ])
-                .then(res => db.removeRole(res.roleId))
-                .then(() => console.log("Removed role from the database"))
-                .then(() => loadMainPrompts())
-        });
-}
+//             prompt([
+//                 {
+//                     type: "list",
+//                     name: "roleId",
+//                     message: "Which role would you like to remove?",
+//                     choices: roleChoices
+//                 }
+//             ])
+//                 .then(res => db.removeRole(res.roleId))
+//                 .then(() => console.log("Removed role from the database"))
+//                 .then(() => loadMainPrompts())
+//         });
+// }
