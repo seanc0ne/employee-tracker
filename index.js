@@ -273,10 +273,10 @@ function updateEmployeeManager() {
 
             prompt([
                 {
-                    type: "list",
-                    name: "employeeId",
-                    message: "Which employee's manager would you like to update?",
-                    choices: employeeChoices
+                type: "list",
+                name: "employeeId",
+                message: "Which employee's manager would you like to update?",
+                choices: employeeChoices
                 }
             ])
                 .then(res => {
@@ -331,35 +331,66 @@ function addEmployee() {
                 console.log("We need a last name, girl:");
             }
         }
-    },
-    {
-        name: "newEmployeeRole",
-        type: "input",
-        message: "Enter Employee Role:",
-        validate: (input) => {
-            if (input) {
-                return true;
-        } else {
-            console.log("That role, honey. Give it up:");
-        }
-    }}
-    ]).then(function(userInput) {
-        connection.query(
-            "INSERT INTO employee SET ?", {
-                first_name: userInput.newEmployeeFirst,
-                last_name: userInput.newEmployeeLast,
-                role_id: userInput.newEmployeeRole,
-                manager_id: null
-            },
-            function (err, userInput) {
-                if (err) {
-                    throw err;
+    }
+
+    ]).then(function(res) {
+        const newEmployeeFirstName = res.newEmployeeFirst
+        const newEmployeeLastName = res.newEmployeeLast
+        db.findAllRoles()
+        .then(([rows]) => {
+            let roles = rows;
+            const roleChoices = roles.map(({ id, title }) => ({
+                name: title,
+                value: id
+            }));
+
+            prompt([
+                {
+                    type: "list",
+                    name: "roleId",
+                    message: "What role would you like to give the new employee?",
+                    choices: roleChoices
                 }
-                console.table(userInput);
-            }
-        );
-        init();
-    });
+            ])
+                .then(function(res) {
+                    const newEmployeeRoleId = res.roleId
+                    db.findAllEmployees()
+                    .then(([rows]) => {
+                        let managers = rows;
+                        const managerChoices = managers.map(({ id, first_name, last_name }) => ({
+                            name: `${first_name} ${last_name}`,
+                            value: id
+                        }));
+                        prompt([
+                            {
+                                type: "list",
+                                name: "managerId",
+                                message: "Who manages this new employee?",
+                                choices: managerChoices
+                            }
+                        ])
+                        .then(function(res) {
+                            const newEmployeeManagerId = res.managerId;
+                            connection.query(
+                                "INSERT INTO employee SET ?", {
+                                    first_name: newEmployeeFirstName,
+                                    last_name: newEmployeeLastName,
+                                    role_id: newEmployeeRoleId,
+                                    manager_id: newEmployeeManagerId
+                                },
+                                function (err, userInput) {
+                                    if (err) {
+                                        throw err;
+                                    }
+                                    console.table(userInput);
+                                }
+                            );
+                            init();
+                        });
+                    })
+                })
+        });
+    })
 }
 
 function addDepartment() {
