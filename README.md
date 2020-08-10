@@ -1,5 +1,3 @@
-# employee-tracker
-
 # Employee Tracker ![githublicense](https://img.shields.io/badge/license-MIT-blue.svg)
 
 [![ScreenShot](screenshot.png)](https://lit-reef-93078.herokuapp.com/)
