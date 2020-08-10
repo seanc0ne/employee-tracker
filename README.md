@@ -1,29 +1,25 @@
 # Employee Tracker ![githublicense](https://img.shields.io/badge/license-MIT-blue.svg)
 
-[![ScreenShot](screenshot.png)](https://lit-reef-93078.herokuapp.com/)
+[![ScreenShot](screenshot.png)](https://www.youtube.com/watch?v=GbEgXy0xhdo&feature=youtu.be)
 
-[Link to deployed application on Heroku](https://lit-reef-93078.herokuapp.com/)
+[Link to walkthrough video on YouTube](https://www.youtube.com/watch?v=GbEgXy0xhdo&feature=youtu.be)
 
 ## Description
 
-Welcome to Note Taker: An application that can be used to write and save notes. This application uses an Express.js back end and saves and retrieves note data from a JSON file.
-
+Welcome to Employee Tracker: An application that allows the user to view and manage the departments, roles, and employees in their company so they can organize and plan their business. The app connects to a MySQL database, and the user can add new information to the database. The user can view employees by certain categories. 
 
 ## Installation
 
-The Note Taker uses the Express package. To install, run: 
+To install, run: 
 
 ```
 npm i
 ```
+The app uses the mysql and inquirer packages.
 
 ## Usage
 
-Clone or fork this repo if you would like. Run the following to start the server:
-```
-node server.js
-```
-Open your browser at localhost:3001. You may add a note title and description, save notes or delete notes.
+Clone or fork this repo if you would like. You must have node.js installed on your system.
 
 ## License
 
