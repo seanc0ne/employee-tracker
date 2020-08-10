@@ -133,8 +133,9 @@ function viewEmployees() {
             let employees = rows;
             console.log("\n");
             console.table(employees);
+            loadMainPrompts();
         })
-        .then(() => loadMainPrompts());
+    // .then(() => loadMainPrompts());
 }
 
 function viewDepartments() {
@@ -143,8 +144,9 @@ function viewDepartments() {
             let departments = rows;
             console.log("\n");
             console.table(departments);
-        })
-        .then(() => loadMainPrompts());
+            loadMainPrompts();
+        });
+    // .then(() => loadMainPrompts());
 }
 
 function viewRoles() {
@@ -153,8 +155,9 @@ function viewRoles() {
             let roles = rows;
             console.log("\n");
             console.table(roles);
+            loadMainPrompts();
         })
-        .then(() => loadMainPrompts());
+    // .then(() => loadMainPrompts());
 }
 
 // VIEW BY FUNCTIONS
@@ -212,8 +215,9 @@ function viewEmployeesByManager() {
                     } else {
                         console.table(employees);
                     }
+                    loadMainPrompts();
                 })
-                .then(() => loadMainPrompts())
+            // .then(() => loadMainPrompts())
         });
 }
 
@@ -255,8 +259,11 @@ function updateEmployeeRole() {
                                 }
                             ])
                                 .then(res => db.updateEmployeeRole(employeeId, res.roleId))
-                                .then(() => console.log("Employee's role updated"))
-                                .then(() => loadMainPrompts())
+                                .then(() => {
+                                    console.log("Employee's role updated");
+                                    loadMainPrompts();
+                                })
+                            // .then(() => loadMainPrompts())
                         });
                 });
         });
@@ -273,10 +280,10 @@ function updateEmployeeManager() {
 
             prompt([
                 {
-                type: "list",
-                name: "employeeId",
-                message: "Which employee's manager would you like to update?",
-                choices: employeeChoices
+                    type: "list",
+                    name: "employeeId",
+                    message: "Which employee's manager would you like to update?",
+                    choices: employeeChoices
                 }
             ])
                 .then(res => {
@@ -298,134 +305,137 @@ function updateEmployeeManager() {
                                 }
                             ])
                                 .then(res => db.updateEmployeeManager(employeeId, managerId))
-                                .then(() => console.log("Employee's manager updated"))
-                                .then(() => loadMainPrompts())
+                                .then(() => {
+                                    console.log("Employee's manager updated");
+                                    loadMainPrompts();
+
+                                    // .then(() => loadMainPrompts())
+                                });
                         });
                 });
-        });
-}
+        })
+    }
+    // ADD DEPT/ROLE/EE FUNCTIONS 
 
-// ADD DEPT/ROLE/EE FUNCTIONS 
-
-function addEmployee() {
-    prompt([{
-        name: "newEmployeeFirst",
-        type: "input",
-        message: "Enter new employee's first name:",
-        validate: (input) => {
-            if (input) {
-                return true;
-            } else {
-                console.log("Honey, you gotta give me a name:");
+    function addEmployee() {
+        prompt([{
+            name: "newEmployeeFirst",
+            type: "input",
+            message: "Enter new employee's first name:",
+            validate: (input) => {
+                if (input) {
+                    return true;
+                } else {
+                    console.log("Honey, you gotta give me a name:");
+                }
+            }
+        },
+        {
+            name: "newEmployeeLast",
+            type: "input",
+            message: "Enter new employee last name:",
+            validate: (input) => {
+                if (input) {
+                    return true;
+                } else {
+                    console.log("We need a last name, girl:");
+                }
             }
         }
-    },
-    {
-        name: "newEmployeeLast",
-        type: "input",
-        message: "Enter new employee last name:",
-        validate: (input) => {
-            if (input) {
-                return true;
-            } else {
-                console.log("We need a last name, girl:");
-            }
-        }
+
+        ]).then(function (res) {
+            const newEmployeeFirstName = res.newEmployeeFirst
+            const newEmployeeLastName = res.newEmployeeLast
+            db.findAllRoles()
+                .then(([rows]) => {
+                    let roles = rows;
+                    const roleChoices = roles.map(({ id, title }) => ({
+                        name: title,
+                        value: id
+                    }));
+
+                    prompt([
+                        {
+                            type: "list",
+                            name: "roleId",
+                            message: "What role would you like to give the new employee?",
+                            choices: roleChoices
+                        }
+                    ])
+                        .then(function (res) {
+                            const newEmployeeRoleId = res.roleId
+                            db.findAllEmployees()
+                                .then(([rows]) => {
+                                    let managers = rows;
+                                    const managerChoices = managers.map(({ id, first_name, last_name }) => ({
+                                        name: `${first_name} ${last_name}`,
+                                        value: id
+                                    }));
+                                    prompt([
+                                        {
+                                            type: "list",
+                                            name: "managerId",
+                                            message: "Who manages this new employee?",
+                                            choices: managerChoices
+                                        }
+                                    ])
+                                        .then(function (res) {
+                                            const newEmployeeManagerId = res.managerId;
+                                            connection.query(
+                                                "INSERT INTO employee SET ?", {
+                                                first_name: newEmployeeFirstName,
+                                                last_name: newEmployeeLastName,
+                                                role_id: newEmployeeRoleId,
+                                                manager_id: newEmployeeManagerId
+                                            },
+                                                function (err, userInput) {
+                                                    if (err) {
+                                                        throw err;
+                                                    }
+                                                    console.table(userInput);
+                                                }
+                                            );
+                                            init();
+                                        });
+                                })
+                        })
+                });
+        })
     }
 
-    ]).then(function(res) {
-        const newEmployeeFirstName = res.newEmployeeFirst
-        const newEmployeeLastName = res.newEmployeeLast
-        db.findAllRoles()
-        .then(([rows]) => {
-            let roles = rows;
-            const roleChoices = roles.map(({ id, title }) => ({
-                name: title,
-                value: id
-            }));
-
-            prompt([
-                {
-                    type: "list",
-                    name: "roleId",
-                    message: "What role would you like to give the new employee?",
-                    choices: roleChoices
+    function addDepartment() {
+        prompt([{
+            name: "newDepartment",
+            type: "input",
+            message: "Enter name of new department:",
+            validate: (input) => {
+                if (input) {
+                    return true;
+                } else {
+                    console.log("You better enter that department name:");
                 }
-            ])
-                .then(function(res) {
-                    const newEmployeeRoleId = res.roleId
-                    db.findAllEmployees()
-                    .then(([rows]) => {
-                        let managers = rows;
-                        const managerChoices = managers.map(({ id, first_name, last_name }) => ({
-                            name: `${first_name} ${last_name}`,
-                            value: id
-                        }));
-                        prompt([
-                            {
-                                type: "list",
-                                name: "managerId",
-                                message: "Who manages this new employee?",
-                                choices: managerChoices
-                            }
-                        ])
-                        .then(function(res) {
-                            const newEmployeeManagerId = res.managerId;
-                            connection.query(
-                                "INSERT INTO employee SET ?", {
-                                    first_name: newEmployeeFirstName,
-                                    last_name: newEmployeeLastName,
-                                    role_id: newEmployeeRoleId,
-                                    manager_id: newEmployeeManagerId
-                                },
-                                function (err, userInput) {
-                                    if (err) {
-                                        throw err;
-                                    }
-                                    console.table(userInput);
-                                }
-                            );
-                            init();
-                        });
-                    })
-                })
-        });
-    })
-}
-
-function addDepartment() {
-    prompt([{
-        name: "newDepartment",
-        type: "input",
-        message: "Enter name of new department:",
-        validate: (input) => {
-            if (input) {
-                return true;
-            } else {
-                console.log("You better enter that department name:");
             }
-        }
-    }]).then(function(userInput) {
-        connection.query(
-            "INSERT INTO department SET ?", {
+        }]).then(function (userInput) {
+            connection.query(
+                "INSERT INTO department SET ?", {
                 name: userInput.newDepartment,
             },
-            function(err, userInput) {
-                if (err) {
-                    throw err;
+                function (err, userInput) {
+                    if (err) {
+                        throw err;
+                    }
+                    console.log(`Added new department: ${userInput.newDepartment}`);
+                    viewDepartments();
                 }
-                console.log(`Added new department: ${userInput.newDepartment}`);
-                viewAllDep();
-            }
-        );
+            );
 
-        init();
+            init();
 
-    });
-}
+        });
+    }
 
-function addRole() {
-    prompt([{
+    function addRole() {
+        prompt([{
             name: "newRoleTitle",
             type: "input",
             message: "Enter name of new role:",
@@ -461,26 +471,26 @@ function addRole() {
                 }
             }
         }
-    ]).then(function(userInput) {
-        connection.query(
-            "INSERT INTO role SET ?", {
+        ]).then(function (userInput) {
+            connection.query(
+                "INSERT INTO role SET ?", {
                 title: userInput.newRoleTitle,
                 salary: userInput.salary,
-                dep_id: userInput.roleDepID,
+                department_id: userInput.roleDepID,
             },
-            function(err, userInput) {
-                if (err) {
-                    throw err;
+                function (err, userInput) {
+                    if (err) {
+                        throw err;
+                    }
+                    console.log(`Added new role: ${userInput.newRoleTitle}`);
+                    viewRoles();
                 }
-                console.log(`Added new role: ${userInput.newRoleTitle}`);
-                viewAllRoles();
-            }
-        );
+            );
 
-        init();
+            init();
 
-    });
-}
+        });
+    }
 
 // DELETE DEPT/ROLE/EE FUNCTIONS 
 
